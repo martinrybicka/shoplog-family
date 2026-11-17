@@ -1,0 +1,21 @@
+server {
+    listen 8080;
+    server_name _;
+    access_log /var/log/nginx/access.log shoplog;
+    set $shoplog_proto ${PUBLIC_SCHEME};
+    client_max_body_size 1m;
+    root /usr/share/nginx/html;
+    include /etc/nginx/shoplog/security-headers.conf;
+    include /etc/nginx/shoplog/proxy-api.conf;
+    location /assets/ {
+        try_files $uri =404;
+        expires 1y;
+        include /etc/nginx/shoplog/security-headers.conf;
+        add_header Cache-Control "public, immutable";
+    }
+    location / {
+        try_files $uri $uri/ /index.html;
+        include /etc/nginx/shoplog/security-headers.conf;
+        add_header Cache-Control "no-store" always;
+    }
+}

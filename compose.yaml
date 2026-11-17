@@ -1,0 +1,70 @@
+name: shoplog-family
+services:
+  db:
+    build:
+      context: .
+      dockerfile: infra/database.Dockerfile
+    environment:
+      POSTGRES_DB: shoplog
+      POSTGRES_USER: shoplog_bootstrap
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Vygenerujte prostředí pomocí infra/setup_env.py}
+      SHOPLOG_APP_DB_USER: shoplog
+      SHOPLOG_APP_DB_PASSWORD: ${POSTGRES_PASSWORD:?Vygenerujte prostředí}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks: [database]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U shoplog_bootstrap -d shoplog']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+  backend:
+    build:
+      context: .
+      dockerfile: infra/backend.Dockerfile
+      target: production
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.development
+      DJANGO_DEBUG: "false"
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:?Vygenerujte prostředí}
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1
+      DJANGO_CSRF_TRUSTED_ORIGINS: http://localhost:${SHOPLOG_HTTP_PORT:-8090}
+      SHOPLOG_SETUP_TOKEN: ${SHOPLOG_SETUP_TOKEN:-}
+      POSTGRES_DB: shoplog
+      POSTGRES_USER: shoplog
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_HOST: db
+    networks: [application, database]
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health/ready/', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 60s
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,mode=1777,size=268435456
+    security_opt: [no-new-privileges:true]
+    restart: unless-stopped
+  web:
+    build:
+      context: .
+      dockerfile: infra/frontend.Dockerfile
+    environment:
+      PUBLIC_SCHEME: http
+    ports:
+      - 127.0.0.1:${SHOPLOG_HTTP_PORT:-8090}:8080
+    networks: [application]
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  postgres_data:
+networks:
+  application:
+  database:
+    internal: true
