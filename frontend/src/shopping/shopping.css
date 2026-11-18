@@ -1614,3 +1614,30 @@ body {
 .month-picker select {
   width: auto;
 }
+
+.basket-items {
+  border: 0;
+  padding: 0;
+  margin: 0 0 1rem;
+}
+.basket-item {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+}
+.basket-item > .input {
+  flex: 1;
+  min-width: 0;
+}
+.basket-foods {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  background: var(--shop-mint);
+  border-radius: 0.5rem;
+  max-height: 13rem;
+  overflow-y: auto;
+}

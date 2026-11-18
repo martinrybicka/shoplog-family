@@ -15,3 +15,5 @@ Jedna rodina sdílí všechny uložené nákupy a jejich přílohy. Autor zůst�
 Rozepsaná metadata jsou pouze v paměti okna, reload je zahodí. Uložená fotografie zůstává v DB do dokončení nebo ručního odstranění. Po dokončení se fotografie atomicky přesune k nákupu a návrh včetně OCR smaže. Uživatelé nemají veřejnou registraci; první správce jednorázově a další účty prostřednictvím správce s dočasným heslem.
 
 Budoucí funkce, nyní neimplementované: OCR položek, export, rozpočty, více měn/rodin, cenová historie produktů, položkové kategorie, PDF/HEIC, automatická retence návrhů, PWA a offline práce, produkční zálohy a vzdálené nasazení. Vyžadují další zadání.
+
+Při vytváření košíku se nákupní seznam zadává po jednotlivých položkách. Po vyplnění posledního řádku se zobrazí další prázdný řádek. Prázdné řádky se při uložení vynechají. Tlačítko plus u řádku nabízí 20 běžných potravin a vybraná potravina vyplní daný řádek. Uložení používá dosavadní textové pole se seznamem odděleným novými řádky, takže dříve uložené košíky zůstávají čitelné.

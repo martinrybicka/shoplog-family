@@ -25,6 +25,8 @@ export function Baskets() {
   const client = useQueryClient();
   const [open, setOpen] = useState(false);
   const [busy, setBusy] = useState(false);
+  const [items, setItems] = useState([""]);
+  const [picker, setPicker] = useState<number | null>(null);
   const [error, setError] = useState("");
   const members = useQuery({
     queryKey: ["basket-members"],
@@ -38,6 +40,8 @@ export function Baskets() {
         <Button
           onClick={() => {
             setError("");
+            setItems([""]);
+            setPicker(null);
             setOpen(true);
           }}
         >
@@ -104,7 +108,10 @@ export function Baskets() {
                 method: "POST",
                 body: {
                   name: data.get("name"),
-                  shopping_list: data.get("shopping_list"),
+                  shopping_list: items
+                    .map((item) => item.trim())
+                    .filter(Boolean)
+                    .join("\n"),
                   assignee_ids: data.getAll("assignee_ids"),
                 },
               });
@@ -122,15 +129,81 @@ export function Baskets() {
           <Field id="basket-name" label="Název košíku">
             <Input id="basket-name" name="name" required maxLength={150} />
           </Field>
-          <Field id="shopping-list" label="Co nakoupit (volitelné)">
-            <textarea
-              className="input"
-              id="shopping-list"
-              name="shopping_list"
-              maxLength={4000}
-              rows={3}
-            />
-          </Field>
+          <fieldset className="basket-items">
+            <legend>Co nakoupit (volitelné)</legend>
+            {items.map((item, index) => (
+              <div className="basket-item" key={index}>
+                <Input
+                  aria-label={`Položka ${index + 1}`}
+                  value={item}
+                  maxLength={150}
+                  placeholder={`Položka ${index + 1}`}
+                  onChange={(event) => {
+                    const next = [...items];
+                    next[index] = event.target.value;
+                    if (index === next.length - 1 && event.target.value.trim())
+                      next.push("");
+                    setItems(next);
+                  }}
+                />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  aria-label={`Vybrat potravinu pro položku ${index + 1}`}
+                  aria-expanded={picker === index}
+                  onClick={() => setPicker(picker === index ? null : index)}
+                >
+                  +
+                </Button>
+                {picker === index && (
+                  <div
+                    className="basket-foods"
+                    role="group"
+                    aria-label={`Základní potraviny pro položku ${index + 1}`}
+                  >
+                    {[
+                      "Chléb",
+                      "Rohlíky",
+                      "Mléko",
+                      "Máslo",
+                      "Vejce",
+                      "Sýr",
+                      "Jogurt",
+                      "Šunka",
+                      "Kuřecí maso",
+                      "Brambory",
+                      "Rýže",
+                      "Těstoviny",
+                      "Mouka",
+                      "Cukr",
+                      "Olej",
+                      "Jablka",
+                      "Banány",
+                      "Rajčata",
+                      "Cibule",
+                      "Mrkev",
+                    ].map((food) => (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        key={food}
+                        onClick={() => {
+                          const next = [...items];
+                          next[index] = food;
+                          if (index === next.length - 1) next.push("");
+                          setItems(next);
+                          setPicker(null);
+                        }}
+                      >
+                        {food}
+                      </Button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+            <p className="muted">Prázdné položky se neuloží.</p>
+          </fieldset>
           <fieldset>
             <legend>Kdo bude nakupovat</legend>
             {members.isPending && <p>Načítám členy…</p>}
@@ -147,8 +220,25 @@ export function Baskets() {
               <p>V rodině zatím nejsou další aktivní členové.</p>
             )}
           </fieldset>
-          <ErrorMessage>{error}</ErrorMessage>
-          <Button disabled={busy || members.isPending || !!members.error}>
+          <ErrorMessage>
+            {items
+              .map((item) => item.trim())
+              .filter(Boolean)
+              .join("\n").length > 4000
+              ? "Seznam smí mít nejvýše 4000 znaků."
+              : error}
+          </ErrorMessage>
+          <Button
+            disabled={
+              items
+                .map((item) => item.trim())
+                .filter(Boolean)
+                .join("\n").length > 4000 ||
+              busy ||
+              members.isPending ||
+              !!members.error
+            }
+          >
             {busy ? "Ukládám…" : "Vytvořit košík"}
           </Button>
         </form>
