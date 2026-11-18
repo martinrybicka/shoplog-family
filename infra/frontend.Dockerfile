@@ -5,7 +5,7 @@ RUN npm ci
 COPY frontend/ ./
 RUN npm run build
 
-FROM nginx:1.30.2-alpine@sha256:5f979dcfed4ce6461873f087e8c980d6e29b084b9e8776d9704a7e989b5f4898
+FROM nginx:1.30.2-alpine@sha256:5f979dcfed4ce6461873f087e8c980d6e29b084b9e8776d9704a7e989b5f4898 AS production
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY infra/nginx/common-http.conf /etc/nginx/conf.d/00-common.conf
 COPY infra/nginx/proxy-api.conf /etc/nginx/shoplog/proxy-api.conf

@@ -10,3 +10,5 @@
 - Závislosti jsou zamčené v uv.lock, package-lock.json a OCR manifestu. Nové ověřovat v oficiálních zdrojích.
 - Nezveřejňovat na GitHubu a nenasazovat bez samostatného souhlasu pro tento projekt. Povolení TankLogu se sem nepřenáší. Nemazat data/volumes a neprovádět nucené Git operace.
 - Etapy a skutečné ověření vést v docs/ROADMAP.md a docs/VALIDATION.md. Návrhy nezaměňovat za funkce; testy označit jako úspěšné jen po skutečném běhu. Dokončení etapy zahrnuje lokální commit a předání s omezeními.
+
+- Uživatel 18. 11. 2026 výslovně povolil zveřejnění na GitHubu a samostatné nasazení přes Portainer na DOCKER01 pro nakupy.mrybicka.com stejným způsobem jako TankLog. Povolení platí pouze pro tento nový projekt; ostatní stacky a existující data se nemění. Produkční instalace je čistá, bez seed účtů; tajné hodnoty pouze v prostředí.

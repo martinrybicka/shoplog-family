@@ -11,3 +11,7 @@ Implementované v této etapě, skutečné výsledky a neověřené části uvá
 1. Další formáty/lepší OCR položek, export, rozpočty a produktová analytika podle dalšího zadání.
 2. Produkční příprava s měřením, šifrovanými off-host zálohami a obnovou. Vlastní doména, samostatný stack a volume.
 3. GitHub a vzdálené nasazení pouze po samostatném výslovném povolení pro Rodinné nákupy. Souhlas pro TankLog nepokrývá tento projekt.
+
+## Samostatně schválené vydání – 18. 11. 2026
+
+Uživatel výslovně povolil GitHub a samostatný Portainer stack na DOCKER01 pro nakupy.mrybicka.com stejným způsobem jako TankLog. Příprava a skutečný stav: DEPLOYMENT_PORTAINER.md. Produkční instalace bez seed/importu; žádný zásah do stávajících stacků nebo dat.

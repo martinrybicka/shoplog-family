@@ -18,6 +18,10 @@ Jedna instalace = jedna rodina. Aktivní členové sdílí historii nákupů, so
 
 **Omezení:** pouze CZK, kategorie na úrovni celého nákupu, ruční přepis jednotlivých položek. OCR nenavrhuje položky a není zárukou správnosti. Bez PDF/HEIC, rozpočtů, exportu, rozdělování plateb, více domácností, offline ukládání a PWA instalace. Produkční nasazení a Docker runtime zatím nejsou ověřené. Přesné výsledky v [docs/VALIDATION.md](docs/VALIDATION.md).
 
+## GitHub a Portainer
+
+Samostatné nasazení na DOCKER01 a doménu `nakupy.mrybicka.com` uživatel schválil 18. 11. 2026. Profil `compose.portainer.yaml` používá vlastní image, DB a volume; `compose.build.yaml` doplňuje samostatný build jako u TankLogu. Prostředí popisuje `.env.portainer.example`. [Postup a skutečný stav](docs/DEPLOYMENT_PORTAINER.md).
+
 ## Lokální spuštění přes Docker
 
 ```sh
