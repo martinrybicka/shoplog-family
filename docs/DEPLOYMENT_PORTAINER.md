@@ -58,3 +58,7 @@ Autoritativní DNS už vrací adresu veřejné proxy. Při kontrole veřejný se
 ## Veřejné ověření HTTPS
 
 Po dokončení NPM uživatelem 18. 11. 2026 veřejné `https://nakupy.mrybicka.com/` odpovědělo HTTP 200 s platným TLS ověřeným curl. `GET /api/v1/auth/setup/` vrátil 200 a `available: true`, anonymní seznam nákupů vrátil 403. API vrací `Cache-Control: private, no-store`. První správce může dokončit instalaci pomocí `SHOPLOG_SETUP_TOKEN` z prostředí Portainer stacku. Počet jednotlivých databázových záznamů a úplný průchod přihlášením nebyly při tomto ověření kontrolovány.
+
+## Položky košíku – verze 1.1.2
+
+Aktualizace 18. 11. 2026 byla sestavena na DOCKER01 z revize `106d081` a nasazena přes Portainer stack 52. Web a backend používají tag 1.1.2, backend je stejný obraz jako 1.1.1, databáze zůstává na 1.0.0. Všechny tři kontejnery hlásily healthy a databázový svazek byl po aktualizaci shodný. Veřejné HTTPS poskytuje nový JavaScript obsahující nabídku potravin a upozornění na prázdné položky. Anonymní přístup k API košíků vrátil 403. Komponentový test skutečně ověřil 20 potravin, přidání řádku a uložení jen vyplněných položek. Přihlášený produkční průchod nebyl proveden.
