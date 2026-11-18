@@ -39,6 +39,12 @@ DNS `nakupy.mrybicka.com` musí vést ke stávající reverzní proxy. V Nginx P
 
 ## Stav při přípravě
 
-Produkční profil, oddělené image/tagy, prostředí a tento postup jsou připravené. Nasazení zatím nebylo provedeno. Veřejná správa `https://portainer.mrybicka.com` při kontrole vracela Cloudflare HTTP 530; `nakupy.mrybicka.com` zatím neměla dostupný DNS záznam. Je nutné ověřit funkční správcovský přístup a skutečnou konfiguraci DNS/NPM.
+Veřejný GitHub byl skutečně vytvořen: https://github.com/martinrybicka/shoplog-family, default `main`. Implementace a produkční profil byly zveřejněné v commitu `d7240bd`. Kontrola celé Git historie i zveřejňovaného patche pomocí Gitleaks nenašla tajné údaje. Lokální kontrola připravených souborů neobsahovala provozní data ani vygenerovaná tajemství.
+
+Znovu 18. 11. 2026 skutečně prošlo 37 backendových testů včetně lokálního OCR (10,80 s), 8 frontendových testů, frontend lint/TypeScript/build, Ruff a kontrola migrací (No changes detected). Kontrola `config --quiet` kombinace Portainer+build profilů prošla se syntetickými proměnnými, bez výpisu tajemství. Poslední doložené prohlížečové testy jsou z 17. 11. a v tomto vydání nebyly znovu spuštěné; rozhraní se při přípravě nasazení neměnilo.
+
+**Nasazení nebylo provedeno.** Veřejná správa `https://portainer.mrybicka.com` vrací Cloudflare HTTP 530 / Tunnel error 1033 (ověřeno přes web i API). `nakupy.mrybicka.com` se zatím nepřekládá v DNS. DOCKER01 ani docker01.local ani docker01.int.mrybicka.com se z tohoto počítače nepřekládají a není přístupná SSH relace nebo klíč. Uživateli byla položena otázka na funkční adresu správy/přihlášení. Bez obnoveného tunelu nebo jiné dostupné cesty nelze vytvořit stack, sestavit image ani ověřit nový port. Existující TankLog HTTPS odpovídá 200; nebyl proveden žádný zásah do jeho stacku ani dat.
+
+Produkční profil, oddělené image/tagy a postup jsou připravené. Zbývá funkční správcovský přístup, inventura DOCKER01/portu, sestavení image, čistý Portainer stack, DNS/NPM/HTTPS a závěrečná akceptace výše. Žádné nové produkční tajné hodnoty ani demo účty zatím nebyly vytvořené.
 
 Automatické off-host zálohy a obnova nejsou součástí hotových funkcí projektu; samotný Docker volume není záloha.
