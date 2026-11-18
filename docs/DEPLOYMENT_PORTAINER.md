@@ -54,3 +54,7 @@ Automatické off-host zálohy a obnova nejsou součástí hotových funkcí proj
 Portainer sestavil všechny tři obrazy `1.0.0` a založil stack `shoplog-family` (ID 52) z revize `197e8c5`. Databáze a backend hlásily `healthy`. Web publikuje `0.0.0.0:8090`; přímo na DOCKER01 vrátil endpoint prvního spuštění `available: true`. Instalační kód je v prostředí stacku jako `SHOPLOG_SETUP_TOKEN`.
 
 Autoritativní DNS už vrací adresu veřejné proxy. Při kontrole veřejný server dosud odmítal TLS pro novou doménu. Zbývá dokončit Proxy Host a certifikát v Nginx Proxy Manageru a ověřit HTTPS.
+
+## Veřejné ověření HTTPS
+
+Po dokončení NPM uživatelem 18. 11. 2026 veřejné `https://nakupy.mrybicka.com/` odpovědělo HTTP 200 s platným TLS ověřeným curl. `GET /api/v1/auth/setup/` vrátil 200 a `available: true`, anonymní seznam nákupů vrátil 403. API vrací `Cache-Control: private, no-store`. První správce může dokončit instalaci pomocí `SHOPLOG_SETUP_TOKEN` z prostředí Portainer stacku. Počet jednotlivých databázových záznamů a úplný průchod přihlášením nebyly při tomto ověření kontrolovány.
