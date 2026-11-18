@@ -36,6 +36,7 @@ def serialize(purchase, user):
         "store": purchase.store,
         "date": purchase.date.isoformat(),
         "total_amount": str(purchase.total_amount),
+        "basket_id": str(purchase.basket_id) if purchase.basket_id else None,
         "category": purchase.category,
         "note": purchase.note,
         "items": purchase.items,
@@ -90,6 +91,10 @@ def create(request, data):
         if draft_id
         else None
     )
+    if "basket_id" in data and data["basket_id"]:
+        from .baskets import visible_baskets
+
+        get_object_or_404(visible_baskets(request.user), pk=data["basket_id"])
     data["items"], _ = calculate_items(data["items"])
     item = Purchase.objects.create(**data, created_by=request.user, updated_by=request.user)
     if draft:
@@ -109,6 +114,10 @@ def update(request, pk, data):
     authorize(request, item)
     data = dict(data)
     check_version(item, data.pop("version"))
+    if "basket_id" in data and data["basket_id"]:
+        from .baskets import visible_baskets
+
+        get_object_or_404(visible_baskets(request.user), pk=data["basket_id"])
     data["items"], _ = calculate_items(data["items"])
     for field, value in data.items():
         setattr(item, field, value)

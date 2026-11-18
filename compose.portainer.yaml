@@ -28,7 +28,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: shoplog-family-backend:${SHOPLOG_IMAGE_TAG:-latest}
+    image: shoplog-family-backend:${SHOPLOG_APP_IMAGE_TAG:-1.1.0}
     pull_policy: never
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.production
@@ -62,7 +62,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: shoplog-family-web:${SHOPLOG_IMAGE_TAG:-latest}
+    image: shoplog-family-web:${SHOPLOG_APP_IMAGE_TAG:-1.1.0}
     pull_policy: never
     environment:
       PUBLIC_SCHEME: https

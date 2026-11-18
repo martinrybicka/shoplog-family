@@ -96,7 +96,8 @@ test("Fotografie, lokální OCR, soukromý archiv a mobilní rozložení", async
     "private, no-store",
   );
   await page.goto("/");
-  await page.getByLabel("Období přehledu").fill("2026-01");
+  await page.getByLabel("Rok", { exact: true }).fill("2026");
+  await page.getByLabel("Měsíc", { exact: true }).selectOption("01");
   await expect(
     page
       .getByText(`Syntetická samoobsluha ${info.project.name}`, { exact: true })

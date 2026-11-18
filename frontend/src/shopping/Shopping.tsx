@@ -37,6 +37,7 @@ import { api, errorText, forgetCsrf } from "../lib/api";
 import { announceLogout } from "../lib/sessionEvents";
 import type { Page, Session } from "../lib/types";
 import "./shopping.css";
+import { Baskets, useBaskets } from "./Baskets";
 
 export const categories: Record<string, string> = {
   FOOD: "Potraviny",
@@ -53,6 +54,7 @@ type Item = {
   total?: string;
 };
 type Purchase = {
+  basket_id: string | null;
   id: string;
   store: string;
   date: string;
@@ -317,18 +319,49 @@ export function Home() {
         </div>
         <label className="month-picker">
           Období
-          <Input
-            type="month"
-            aria-label="Období přehledu"
-            min="0001-01"
-            max="9998-12"
-            value={month}
-            onChange={(event) =>
-              event.target.value && setMonth(event.target.value)
-            }
+          <input
+            aria-label="Rok"
+            className="input"
+            type="number"
+            min={1}
+            max={9998}
+            value={Number(month.slice(0, 4))}
+            onChange={(event) => {
+              const year = Number(event.target.value);
+              if (Number.isInteger(year) && year >= 1 && year <= 9998)
+                setMonth(String(year).padStart(4, "0") + month.slice(4));
+            }}
           />
+          <select
+            className="input"
+            aria-label="Měsíc"
+            value={month.slice(5)}
+            onChange={(event) =>
+              setMonth(month.slice(0, 5) + event.target.value)
+            }
+          >
+            {[
+              "Leden",
+              "Únor",
+              "Březen",
+              "Duben",
+              "Květen",
+              "Červen",
+              "Červenec",
+              "Srpen",
+              "Září",
+              "Říjen",
+              "Listopad",
+              "Prosinec",
+            ].map((name, index) => (
+              <option key={name} value={String(index + 1).padStart(2, "0")}>
+                {name}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
+      <Baskets />
       <section className="shop-hero">
         <div>
           <span className="hero-kicker">
@@ -637,6 +670,9 @@ function EditorForm({ existing }: { existing?: Purchase }) {
   const navigate = useNavigate();
   const client = useQueryClient();
   const [params, setParams] = useSearchParams();
+  const baskets = useBaskets();
+  const initialBasket = existing?.basket_id ?? params.get("basket") ?? "";
+  const [basket, setBasket] = useState(initialBasket);
   const [draftId, setDraftId] = useState(params.get("draft") || "");
   const [step, setStep] = useState(existing || draftId ? 2 : 1);
   const [store, setStore] = useState(existing?.store || "");
@@ -777,6 +813,9 @@ function EditorForm({ existing }: { existing?: Purchase }) {
               total_amount: decimal(amount),
               category,
               note,
+              ...(basket !== initialBasket || (!existing && basket)
+                ? { basket_id: basket || null }
+                : {}),
               items: items.map((item) => ({
                 name: item.name,
                 quantity: decimal(item.quantity),
@@ -868,6 +907,28 @@ function EditorForm({ existing }: { existing?: Purchase }) {
                     }}
                     required
                   />
+                </Field>
+                <Field id="purchase-basket" label="Nákupní košík">
+                  <select
+                    id="purchase-basket"
+                    className="input"
+                    value={basket}
+                    onChange={(e) => {
+                      changed();
+                      setBasket(e.target.value);
+                    }}
+                  >
+                    <option value="">Bez košíku</option>
+                    {basket &&
+                      !baskets.data?.data.some((b) => b.id === basket) && (
+                        <option value={basket}>Vybraný košík</option>
+                      )}
+                    {baskets.data?.data.map((b) => (
+                      <option key={b.id} value={b.id}>
+                        {b.name}
+                      </option>
+                    ))}
+                  </select>
                 </Field>
                 <Field id="category" label="Kategorie">
                   <CategorySelect

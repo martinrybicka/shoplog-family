@@ -34,3 +34,5 @@ Položka vstupu: `{name,quantity,unit_price}`. Výstup přidá `total`. Detail n
 | GET shopping/drafts/{id}/recognize/ | Jen autor; dosavadní OCR výsledek. |
 
 Při vytvoření nákupu se ověří vlastnictví draft_id a fotografie se přesune v téže transakci. Nový request_key s už spotřebovaným draft_id vrací 404. Přesné opakování původní žádosti vrátí původní nákup. Cizí návrh je 404 i pro správce; dokončené účtenky jsou sdílené rodině.
+
+`GET shopping/baskets/` vrací košíky, které uživatel vytvořil nebo ke kterým byl přiřazen, včetně nákupů jejich členů. `POST shopping/baskets/` přijímá název (`name`), volitelný seznam (`shopping_list`) a více aktivních členů (`assignee_ids`). Výběr členů poskytuje `GET shopping/basket-members/`. Nákup lze při vytvoření nebo opravě propojit pomocí `basket_id`. Server ověřuje vztah uživatele ke košíku a odmítá přiřazení k cizímu košíku. Vynechání pole při opravě zachová aktuální přiřazení.

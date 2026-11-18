@@ -15,6 +15,7 @@ class ItemInput(StrictSerializer):
 
 
 class PurchaseInput(StrictSerializer):
+    basket_id = serializers.UUIDField(required=False, allow_null=True)
     store = serializers.CharField(max_length=150)
     date = serializers.DateField()
     total_amount = serializers.DecimalField(max_digits=14, decimal_places=2, min_value=Decimal("0"))
