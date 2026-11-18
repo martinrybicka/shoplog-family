@@ -48,3 +48,9 @@ Znovu 18. 11. 2026 skutečně prošlo 37 backendových testů včetně lokální
 Produkční profil, oddělené image/tagy a postup jsou připravené. Zbývá funkční správcovský přístup, inventura DOCKER01/portu, sestavení image, čistý Portainer stack, DNS/NPM/HTTPS a závěrečná akceptace výše. Žádné nové produkční tajné hodnoty ani demo účty zatím nebyly vytvořené.
 
 Automatické off-host zálohy a obnova nejsou součástí hotových funkcí projektu; samotný Docker volume není záloha.
+
+## Nasazení na DOCKER01 – 18. 11. 2026
+
+Portainer sestavil všechny tři obrazy `1.0.0` a založil stack `shoplog-family` (ID 52) z revize `197e8c5`. Databáze a backend hlásily `healthy`. Web publikuje `0.0.0.0:8090`; přímo na DOCKER01 vrátil endpoint prvního spuštění `available: true`. Instalační kód je v prostředí stacku jako `SHOPLOG_SETUP_TOKEN`.
+
+Autoritativní DNS už vrací adresu veřejné proxy. Při kontrole veřejný server dosud odmítal TLS pro novou doménu. Zbývá dokončit Proxy Host a certifikát v Nginx Proxy Manageru a ověřit HTTPS.
