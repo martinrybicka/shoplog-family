@@ -82,3 +82,7 @@ Prošlo 38 backendových a 11 frontendových testů, lint, sestavení a dva proh
 ## Přehled záruk – verze 1.1.6
 
 Nasazeno 26. 11. 2026 přes Portainer na DOCKER01 z revize `74bb516`. Web i backend byly sestaveny jako `1.1.6`, databázový svazek byl shodný a všechny služby hlásily `healthy`. Veřejné HTTPS poskytlo novou stránku a anonymní API vrátilo 403 s `private, no-store`. Kontrola výpočtu v produkční databázi proběhla v transakci pouze pro čtení.
+
+## Načtení nového vydání – verze 1.1.7
+
+Nasazeno 26. 11. 2026 přes Portainer na DOCKER01 z revize `9169c4e`. Backend používá stejný obraz jako ve verzi 1.1.6. Databázový svazek je shodný a všechny tři služby hlásí `healthy`. Chromium ověřil na veřejném HTTPS načtení JSON verze bez cache, zobrazení potvrzení po simulaci odlišného vydání v prohlížeči a obnovení přihlašovací stránky po potvrzení. Veřejná cesta přehledu je dostupná a API záruk bez přihlášení vrací 403. Přechod mezi dvěma skutečnými sestaveními byl ověřen odděleně v místním prostředí.
