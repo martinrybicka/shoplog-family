@@ -16,7 +16,14 @@ Jedna instalace = jedna rodina. Aktivní členové sdílí historii nákupů, so
 - První správce pomocí jednorázového instalačního kódu, serverové sessions, CSRF, omezení přihlašování, odvolání sessions, profil a motiv v DB, audit.
 - Responzivní rozhraní pro mobil a počítač. Fotografie, náhledy, OCR a ostatní uložená data jsou v PostgreSQL.
 
-**Omezení:** pouze CZK, kategorie na úrovni celého nákupu, ruční přepis jednotlivých položek. OCR nenavrhuje položky a není zárukou správnosti. Bez PDF/HEIC, rozpočtů, exportu, rozdělování plateb, více domácností, offline ukládání a PWA instalace. Produkční nasazení a Docker runtime zatím nejsou ověřené. Přesné výsledky v [docs/VALIDATION.md](docs/VALIDATION.md).
+**Omezení:** pouze CZK, kategorie na úrovni celého nákupu, ruční přepis jednotlivých položek. OCR nenavrhuje položky a není zárukou správnosti. Bez PDF/HEIC, rozpočtů, exportu, rozdělování plateb, více domácností, offline ukládání. Produkční nasazení a Docker runtime zatím nejsou ověřené. Přesné výsledky v [docs/VALIDATION.md](docs/VALIDATION.md).
+
+## Instalace na telefon
+
+- Android (Chrome): otevřete aplikaci a v nabídce prohlížeče vyberte **Přidat na plochu** a potom **Nainstalovat**.
+- iPhone (Safari): zvolte **Sdílet → Přidat na plochu** a zapněte **Otevřít jako webovou aplikaci**, pokud je tato volba dostupná.
+
+Aplikace se spouští z ikony v samostatném okně a pro práci s rodinnými daty potřebuje připojení.
 
 ## GitHub a Portainer
 
