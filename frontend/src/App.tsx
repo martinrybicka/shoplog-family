@@ -12,6 +12,7 @@ import { Loading, Button, ErrorMessage } from "./components/ui";
 import { errorText, forgetCsrf } from "./lib/api";
 import { useSession } from "./lib/auth";
 import { RouteFocus } from "./components/RouteFocus";
+import { UpdateNotice } from "./components/UpdateNotice";
 import { Warranties } from "./shopping/Warranties";
 import { Bootstrap, setupStatus } from "./pages/Bootstrap";
 const Login = lazy(() =>
@@ -163,6 +164,7 @@ export function App() {
       <Theme value={session.data?.theme} />
       <AuthEvents />
       <RouteFocus />
+      {(!session.data || session.data.must_change_password) && <UpdateNotice />}
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route path="/prvni-spusteni" element={<Bootstrap />} />

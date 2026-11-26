@@ -28,7 +28,7 @@ Na přihlašovací stránce i v horní liště aplikace je tlačítko **Nainstal
 
 Aplikace se spouští z ikony v samostatném okně a pro práci s rodinnými daty potřebuje připojení.
 
-Nová verze se načte při obnovení stránky nebo při zavření a novém otevření aplikace. Instalaci na telefon není potřeba opakovat.
+Jakmile otevřená aplikace zjistí nové vydání, zobrazí tlačítko **Načíst novou verzi**. Po potvrzení **Obnovit aplikaci** se stránka znovu načte. Rozpracované údaje před potvrzením uložte. Nové vydání se načte také při běžném obnovení nebo při zavření a novém otevření aplikace. Instalaci na telefon není potřeba opakovat.
 
 ## GitHub a Portainer
 

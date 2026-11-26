@@ -911,6 +911,24 @@ tbody tr:last-child td {
   font-weight: 650;
   margin: 0 30px 10px 0;
 }
+.app-update-notice,
+.app-update-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+}
+.app-update-notice {
+  justify-content: center;
+  padding: 0.65rem 1rem;
+  color: var(--text);
+  background: var(--soft);
+  border-bottom: 1px solid var(--border);
+}
+.app-update-actions {
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
 .modal > p {
   font-size: 13px;
   margin-bottom: 24px;

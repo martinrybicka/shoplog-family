@@ -39,6 +39,7 @@ import { announceLogout } from "../lib/sessionEvents";
 import type { Page, Session } from "../lib/types";
 import "./shopping.css";
 import { InstallAppButton } from "../components/InstallApp";
+import { UpdateNotice } from "../components/UpdateNotice";
 import { Baskets, useBaskets } from "./Baskets";
 
 export const categories: Record<string, string> = {
@@ -241,6 +242,7 @@ export function ShoppingShell({ user }: { user: Session }) {
             </Button>
           </div>
         </header>
+        <UpdateNotice />
         <main id="main-content" tabIndex={-1} className="shop-main">
           <ErrorMessage>{error}</ErrorMessage>
           <Outlet />

@@ -78,3 +78,7 @@ Nasazeno 26. 11. 2026 přes Portainer z revize `262d886`. Tlačítko je u přihl
 Nasazeno 26. 11. 2026 přes Portainer z revize `5de7b10` na DOCKER01 se shodným databázovým svazkem. Po nahrání se automaticky doplní rozpoznané údaje do prázdných kolonek a nákup se ukládá až po potvrzení. Parser umí také data ve formátu rok–měsíc–den.
 
 Prošlo 38 backendových a 11 frontendových testů, lint, sestavení a dva prohlížečové průchody se syntetickou účtenkou a skutečným lokálním OCR. Na produkčním snímku OCR bez zápisu rozpoznalo obchod, datum a částku. Datum i částka souhlasily s uloženým záznamem. Veřejné HTTPS poskytlo nový web a anonymní požadavek ke košíkům vrátil 403.
+
+## Přehled záruk – verze 1.1.6
+
+Nasazeno 26. 11. 2026 přes Portainer na DOCKER01 z revize `74bb516`. Web i backend byly sestaveny jako `1.1.6`, databázový svazek byl shodný a všechny služby hlásily `healthy`. Veřejné HTTPS poskytlo novou stránku a anonymní API vrátilo 403 s `private, no-store`. Kontrola výpočtu v produkční databázi proběhla v transakci pouze pro čtení.

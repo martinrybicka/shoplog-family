@@ -14,6 +14,11 @@ server {
     location /icons/ {
         try_files $uri =404;
     }
+    location = /version.json {
+        try_files $uri =404;
+        include /etc/nginx/shoplog/security-headers.conf;
+        add_header Cache-Control "no-store" always;
+    }
     location /assets/ {
         try_files $uri =404;
         expires 1y;

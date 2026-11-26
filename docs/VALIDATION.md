@@ -89,3 +89,7 @@ Místní náhled při předání běží na http://localhost:8091 s vlastní pr�
 ## Přehled záruk – 26. 11. 2026
 
 Prošlo 39 backendových testů v PostgreSQL včetně OCR, 11 frontendových testů a 8 průchodů Playwright v Chromium na počítači a v mobilní emulaci. Backendový test ověřil rodinná oprávnění, vynechání potravin, výpočet pro 29. únor a hranice stavů. Prohlížeč ověřil navigaci, datum konce, vyloučení potravin, filtr po uplynutí a dostupnost přílohy. axe na testovaných obrazovkách ve světlém a tmavém motivu nenašel závažné ani kritické problémy. Prošly také Vite build, TypeScript, lint, Ruff a kontroly Django včetně kontroly migrací.
+
+## Načtení nového vydání – 26. 11. 2026
+
+Prošlo 13 frontendových testů, TypeScript, Vite build a lint. V Chromium byl ověřen přechod mezi dvěma různými produkčními sestaveními z lokálního webu. Oznámení se zobrazilo jak na počítačové přihlašovací stránce, tak v otevřeném nákupním formuláři v mobilní emulaci. Odklad zachoval rozepsané údaje. Potvrzení načetlo druhé sestavení a po načtení oznámení zmizelo.
