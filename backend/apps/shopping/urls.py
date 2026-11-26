@@ -11,8 +11,10 @@ from .views import (
     ReceiptView,
     SummaryView,
 )
+from .warranties import WarrantiesView
 
 urlpatterns = [
+    path("warranties/", WarrantiesView.as_view()),
     path("baskets/", BasketsView.as_view()),
     path("basket-members/", BasketMembersView.as_view()),
     path("purchases/", PurchasesView.as_view()),

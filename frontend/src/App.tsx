@@ -12,6 +12,7 @@ import { Loading, Button, ErrorMessage } from "./components/ui";
 import { errorText, forgetCsrf } from "./lib/api";
 import { useSession } from "./lib/auth";
 import { RouteFocus } from "./components/RouteFocus";
+import { Warranties } from "./shopping/Warranties";
 import { Bootstrap, setupStatus } from "./pages/Bootstrap";
 const Login = lazy(() =>
   import("./pages/Login").then((m) => ({ default: m.Login })),
@@ -173,6 +174,7 @@ export function App() {
             <Route path="historie" element={<History />} />
             <Route path="historie/:id" element={<PurchaseDetail />} />
             <Route path="historie/:id/upravit" element={<PurchaseEditor />} />
+            <Route path="zaruky" element={<Warranties />} />
             <Route path="profil" element={<Profile />} />
             <Route element={<AdminOnly />}>
               <Route path="rodina" element={<Users />} />

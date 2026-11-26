@@ -15,3 +15,7 @@ Implementované v této etapě, skutečné výsledky a neověřené části uvá
 ## Samostatně schválené vydání – 18. 11. 2026
 
 Uživatel výslovně povolil GitHub a samostatný Portainer stack na DOCKER01 pro nakupy.mrybicka.com stejným způsobem jako TankLog. Příprava a skutečný stav: DEPLOYMENT_PORTAINER.md. Produkční instalace bez seed/importu; žádný zásah do stávajících stacků nebo dat.
+
+## Přehled záruk – 26. 11. 2026
+
+Rodinný přehled počítá orientační termín dva kalendářní roky od data nákupu pro všechny kategorie mimo Potraviny. Výpočet vychází z uložených nákupů. Podrobnosti uvádí SPECIFICATION a API.

@@ -1,4 +1,6 @@
 import { expect, test } from "@playwright/test";
+import { randomUUID } from "node:crypto";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 const password = "Synthetic-Shopping-Test-2026!";
@@ -116,11 +118,78 @@ test("Fotografie, lokální OCR, soukromý archiv a mobilní rozložení", async
   expect((await page.request.get(receipt!)).status()).toBe(403);
 });
 
-test("Přístupnost přehledu a formuláře", async ({ page }) => {
+test("Záruky zobrazí účtenku a vynechají potraviny", async ({ page }, info) => {
+  const suffix = ` ${info.project.name} ${Date.now()}`;
+  const headers = {
+    "X-CSRFToken": (await (await page.request.get("/api/v1/auth/csrf/")).json())
+      .csrf_token,
+  };
+  const upload = await page.request.post("/api/v1/shopping/drafts/", {
+    headers,
+    multipart: {
+      file: {
+        name: "receipt.png",
+        mimeType: "image/png",
+        buffer: await readFile(path.resolve("../.runtime/receipt.png")),
+      },
+    },
+  });
+  expect(upload.status()).toBe(201);
+  const draft = await upload.json();
+  const electronics = `Syntetická elektronika${suffix}`;
+  const food = `Syntetické potraviny${suffix}`;
+  const expired = `Syntetické oblečení${suffix}`;
+  for (const data of [
+    {
+      store: electronics,
+      category: "ELECTRONICS",
+      date: "2026-01-10",
+      draft_id: draft.id,
+    },
+    { store: food, category: "FOOD", date: "2026-01-10" },
+    { store: expired, category: "CLOTHING", date: "2022-01-10" },
+  ]) {
+    const purchase = await page.request.post("/api/v1/shopping/purchases/", {
+      headers,
+      data: { request_key: randomUUID(), total_amount: "500.00", ...data },
+    });
+    expect(purchase.status()).toBe(201);
+  }
+  await page
+    .getByRole("link", { name: "Záruky", exact: true })
+    .filter({ visible: true })
+    .click();
+  await expect(page.getByRole("heading", { name: "Záruky" })).toBeVisible();
+  await page.getByLabel("Stav").selectOption("all");
+  const row = page.getByRole("listitem").filter({ hasText: electronics });
+  await expect(row.getByText("Do 10. ledna 2028")).toBeVisible();
+  const receipt = row.getByRole("link", { name: /Účtenka z obchodu/ });
+  await expect(receipt).toBeVisible();
+  expect(
+    (await page.request.get((await receipt.getAttribute("href"))!)).status(),
+  ).toBe(200);
+  await expect(page.getByRole("link", { name: food, exact: true })).toHaveCount(
+    0,
+  );
+  await page.getByLabel("Stav").selectOption("expired");
+  await expect(
+    page.getByRole("link", { name: expired, exact: true }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: electronics, exact: true }),
+  ).toHaveCount(0);
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+});
+
+test("Přístupnost přehledu a formulářů", async ({ page }) => {
   const { default: AxeBuilder } = await import("@axe-core/playwright");
   for (const mode of ["light", "dark"] as const) {
     await page.emulateMedia({ colorScheme: mode });
-    for (const route of ["/", "/uctenka"]) {
+    for (const route of ["/", "/uctenka", "/zaruky"]) {
       await page.goto(route);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
       const result = await new AxeBuilder({ page }).analyze();

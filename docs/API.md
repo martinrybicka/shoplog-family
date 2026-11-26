@@ -18,9 +18,12 @@ Správce: `GET/POST admin/users/`, `GET/PATCH admin/users/{id}/`, `POST admin/us
 | PATCH shopping/purchases/{id}/ | Celá sada editovatelných polí jako při vytvoření, navíc version; bez request_key/draft_id. Autor/ADMIN. Konflikt 409, cizí editace 403. |
 | DELETE shopping/purchases/{id}/ | JSON `{version:1}`; autor/ADMIN, smazání nákupu i přílohy 204. |
 | GET shopping/purchases/{id}/receipt/ | Očištěný JPEG náhled, `?original=1` validovaný originál JPEG/PNG. |
+| GET shopping/warranties/ | Rodinný přehled nákupů mimo kategorii Potraviny, stránkovaný po 25. Filtry `search` (obchod/poznámka), `category`, `status` (`current` výchozí, `soon`, `expired`, `all`) a `page`. |
 | GET shopping/summary/?month=2026-01 | month, currency CZK, count, total_amount, categories a stores (nejvýše 8 dle částky). Výchozí současný měsíc v Praze. |
 
 Položka vstupu: `{name,quantity,unit_price}`. Výstup přidá `total`. Detail navíc obsahuje id, author, can_edit, has_receipt, version, currency, items_total, difference. Neexistující objekty vrací 404. Neplatná data 400. Klient opakuje stejný request_key i tělo při nejasném síťovém výsledku; klíč se při úpravě nového formuláře změní.
+
+Přehled záruk vrací `id`, `store`, `date`, `category`, `ends_on`, `status`, `days_left`, `has_receipt` a `item_names` v každém řádku. Stav řádku je `active` při více než 30 zbývajících dnech, `soon` včetně dne konce a `expired` při záporném počtu dnů. Datum konce je datum nákupu posunuté o dva kalendářní roky, stav se počítá podle pražského data.
 
 ## Rozpracované fotografie a OCR
 

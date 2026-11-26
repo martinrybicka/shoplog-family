@@ -1641,3 +1641,48 @@ body {
   max-height: 13rem;
   overflow-y: auto;
 }
+
+.warranty-filters {
+  grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+}
+.warranty-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.warranty-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 12rem) minmax(6rem, auto);
+  gap: 1rem;
+  align-items: center;
+  justify-items: start;
+  padding: 1rem 0;
+  border-top: 1px solid currentColor;
+  border-top-color: color-mix(in srgb, currentColor 15%, transparent);
+}
+.warranty-purchase,
+.warranty-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.warranty-soon {
+  color: #633f0c;
+  background: #fff1cf;
+}
+@media (max-width: 700px) {
+  .warranty-filters,
+  .warranty-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .warranty-filters > :first-child,
+  .warranty-purchase {
+    grid-column: 1 / -1;
+  }
+  .shop-mobile-nav a {
+    padding-inline: 6px;
+  }
+}

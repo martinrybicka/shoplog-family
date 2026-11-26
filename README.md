@@ -11,12 +11,13 @@ Jedna instalace = jedna rodina. Aktivní členové sdílí historii nákupů, so
 - Obchod, datum, částka v Kč, kategorie, poznámka a nepovinné položky s množstvím a jednotkovou cenou.
 - Součet položek se počítá přesně s Decimal a půl nahoru na haléře. Skutečně zaplacená částka se nikdy nepřepisuje podle položek; rozdíl se zobrazí.
 - Sdílená historie s hledáním obchodu/poznámky, kategorií, daty a stránkováním. Měsíční přehled částek a kategorií.
+- Přehled záruk zahrnuje všechny nákupy mimo kategorii Potraviny. Ukazuje orientační datum konce dva roky od nákupu, stav a odkaz na přiloženou účtenku.
 - Opravy s ochranou před přepsáním souběžné změny, potvrzované smazání včetně účtenky, ochrana proti duplicitě při opakování uložení.
 - Rozpracované fotografie uložené v DB, dostupné pouze autorovi; dokončení z domovské stránky.
 - První správce pomocí jednorázového instalačního kódu, serverové sessions, CSRF, omezení přihlašování, odvolání sessions, profil a motiv v DB, audit.
 - Responzivní rozhraní pro mobil a počítač. Fotografie, náhledy, OCR a ostatní uložená data jsou v PostgreSQL.
 
-**Omezení:** pouze CZK, kategorie na úrovni celého nákupu, ruční přepis jednotlivých položek. OCR nenavrhuje položky a není zárukou správnosti. Bez PDF/HEIC, rozpočtů, exportu, rozdělování plateb, více domácností, offline ukládání. Produkční nasazení a Docker runtime zatím nejsou ověřené. Přesné výsledky v [docs/VALIDATION.md](docs/VALIDATION.md).
+**Omezení:** pouze CZK, kategorie na úrovni celého nákupu, ruční přepis jednotlivých položek. Výsledky OCR před uložením zkontrolujte. Bez PDF/HEIC, rozpočtů, exportu, rozdělování plateb, více domácností a offline ukládání. Přesné výsledky kontrol uvádí [docs/VALIDATION.md](docs/VALIDATION.md).
 
 ## Instalace na telefon
 
@@ -26,6 +27,8 @@ Na přihlašovací stránce i v horní liště aplikace je tlačítko **Nainstal
 - iPhone (Safari): zvolte **Sdílet → Přidat na plochu** a zapněte **Otevřít jako webovou aplikaci**, pokud je tato volba dostupná.
 
 Aplikace se spouští z ikony v samostatném okně a pro práci s rodinnými daty potřebuje připojení.
+
+Nová verze se načte při obnovení stránky nebo při zavření a novém otevření aplikace. Instalaci na telefon není potřeba opakovat.
 
 ## GitHub a Portainer
 

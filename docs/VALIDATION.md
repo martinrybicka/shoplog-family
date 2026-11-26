@@ -85,3 +85,7 @@ Docker Engine/CLI v tomto prostředí není dostupný. Skutečné `docker compos
 Žádný GitHub/push, veřejná doména, Portainer, TLS certifikát, vzdálený server, off-host záloha nebo obnova nebyly provedené. Není ověřené rozpoznávání reprezentativní sady skutečných obchodních účtenek ani OCR jednotlivých položek. PWA/offline, export, rozpočty, více měn, PDF/HEIC a retence rozpracovaných návrhů nejsou hotové funkce této etapy. Ruční zoom/VoiceOver a jiné prohlížeče nejsou ověřené.
 
 Místní náhled při předání běží na http://localhost:8091 s vlastní prázdnou DB v `.runtime/native-postgres`; instalační kód zůstává pouze v `.env`. Syntetická E2E data jsou v odděleném testovacím clusteru, nikoli v tomto náhledu.
+
+## Přehled záruk – 26. 11. 2026
+
+Prošlo 39 backendových testů v PostgreSQL včetně OCR, 11 frontendových testů a 8 průchodů Playwright v Chromium na počítači a v mobilní emulaci. Backendový test ověřil rodinná oprávnění, vynechání potravin, výpočet pro 29. únor a hranice stavů. Prohlížeč ověřil navigaci, datum konce, vyloučení potravin, filtr po uplynutí a dostupnost přílohy. axe na testovaných obrazovkách ve světlém a tmavém motivu nenašel závažné ani kritické problémy. Prošly také Vite build, TypeScript, lint, Ruff a kontroly Django včetně kontroly migrací.

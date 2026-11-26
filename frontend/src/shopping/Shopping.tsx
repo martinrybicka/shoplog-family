@@ -19,6 +19,7 @@ import {
   LogOut,
   ReceiptText,
   Settings2,
+  ShieldCheck,
   ShoppingBasket,
   Sparkles,
   Trash2,
@@ -91,13 +92,13 @@ const money = (value: string) =>
   new Intl.NumberFormat("cs-CZ", { style: "currency", currency: "CZK" }).format(
     Number(value),
   );
-const dateLabel = (value: string) =>
+export const dateLabel = (value: string) =>
   new Date(value + "T12:00:00").toLocaleDateString("cs-CZ", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
-const imageUrl = (id: string, draft = false) =>
+export const imageUrl = (id: string, draft = false) =>
   `/api/v1/shopping/${draft ? `drafts/${id}/image/` : `purchases/${id}/receipt/`}`;
 function CategorySelect({
   value,
@@ -152,6 +153,10 @@ export function ShoppingShell({ user }: { user: Session }) {
           <NavLink to="/uctenka">
             <CirclePlus size={20} />
             Přidat účtenku
+          </NavLink>
+          <NavLink to="/zaruky">
+            <ShieldCheck size={20} />
+            Záruky
           </NavLink>
           <NavLink to="/profil">
             <Settings2 size={20} />
@@ -256,6 +261,10 @@ export function ShoppingShell({ user }: { user: Session }) {
         <NavLink to="/uctenka">
           <CirclePlus size={20} />
           Přidat
+        </NavLink>
+        <NavLink to="/zaruky">
+          <ShieldCheck size={20} />
+          Záruky
         </NavLink>
         <NavLink to="/profil">
           <Settings2 size={20} />
