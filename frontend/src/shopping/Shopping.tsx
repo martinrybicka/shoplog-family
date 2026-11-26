@@ -37,6 +37,7 @@ import { api, errorText, forgetCsrf } from "../lib/api";
 import { announceLogout } from "../lib/sessionEvents";
 import type { Page, Session } from "../lib/types";
 import "./shopping.css";
+import { InstallAppButton } from "../components/InstallApp";
 import { Baskets, useBaskets } from "./Baskets";
 
 export const categories: Record<string, string> = {
@@ -206,9 +207,9 @@ export function ShoppingShell({ user }: { user: Session }) {
       </aside>
       <div className="shop-body">
         <header className="shop-topbar">
-          <span>
-            Malé nákupy. <strong>Velký přehled.</strong>
-          </span>
+          <div>
+            <InstallAppButton />
+          </div>
           <div className="topbar-controls">
             <span className="family-pill">
               <UsersRound size={16} />

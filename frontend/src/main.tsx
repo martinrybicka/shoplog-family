@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "./App";
 import { AppErrorBoundary } from "./components/AppErrorBoundary";
 import { createQueryClient } from "./lib/queryClient";
+import { InstallAppProvider } from "./components/InstallApp";
 import "./styles.css";
 
 const client = createQueryClient();
@@ -13,7 +14,9 @@ createRoot(document.getElementById("root")!).render(
     <QueryClientProvider client={client}>
       <BrowserRouter>
         <AppErrorBoundary>
-          <App />
+          <InstallAppProvider>
+            <App />
+          </InstallAppProvider>
         </AppErrorBoundary>
       </BrowserRouter>
     </QueryClientProvider>

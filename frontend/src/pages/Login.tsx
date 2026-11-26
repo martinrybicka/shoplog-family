@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { Button, ErrorMessage, Field, Input, Logo } from "../components/ui";
+import { InstallAppButton } from "../components/InstallApp";
 import { api, errorText, refreshCsrf } from "../lib/api";
 import type { Session } from "../lib/types";
 
@@ -113,6 +114,7 @@ export function Login() {
               <ArrowRight size={18} />
             </Button>
           </form>
+          <InstallAppButton className="install-login" />
           <div className="login-help">
             <ShieldCheck size={17} />
             <p>

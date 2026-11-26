@@ -20,6 +20,8 @@ Jedna instalace = jedna rodina. Aktivní členové sdílí historii nákupů, so
 
 ## Instalace na telefon
 
+Na přihlašovací stránce i v horní liště aplikace je tlačítko **Nainstalovat aplikaci**. Otevře instalační dialog, pokud ho prohlížeč nabídne. Jinak zobrazí postup pro instalaci z nabídky.
+
 - Android (Chrome): otevřete aplikaci a v nabídce prohlížeče vyberte **Přidat na plochu** a potom **Nainstalovat**.
 - iPhone (Safari): zvolte **Sdílet → Přidat na plochu** a zapněte **Otevřít jako webovou aplikaci**, pokud je tato volba dostupná.
 
