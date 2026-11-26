@@ -69,12 +69,6 @@ test("Fotografie, lokální OCR, soukromý archiv a mobilní rozložení", async
   await expect(
     page.getByRole("heading", { name: "Údaje o nákupu" }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Rozpoznat údaje", exact: true })
-    .click();
-  await page
-    .getByRole("button", { name: "Použít návrhy ve formuláři" })
-    .click();
   await expect(page.getByLabel("Zaplacená částka (Kč)")).toHaveValue("1234.50");
   await expect(page.getByLabel("Datum nákupu")).toHaveValue("2026-01-10");
   await page

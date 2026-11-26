@@ -42,14 +42,18 @@ def parse_tsv(tsv):
             value = re.sub(r"\s", "", amount[1]).replace(",", ".")
             if Decimal(value) < Decimal("1000000000000"):
                 found.setdefault("total_amount", set()).add(value)
-        day = re.search(r"\b(\d{1,2})[./](\d{1,2})[./](20\d{2})\b", text)
-        if day:
+        for match in re.finditer(
+            r"(?<![\d./-])(?:(20\d{2})\s*-\s*(\d{1,2})\s*-\s*(\d{1,2})"
+            r"|(\d{1,2})\s*[./]\s*(\d{1,2})\s*[./]\s*(20\d{2}))(?![\d./-])",
+            text,
+        ):
+            y, m, d, local_d, local_m, local_y = match.groups()
             try:
-                value = date(int(day[3]), int(day[2]), int(day[1]))
-                if value <= timezone.localdate():
-                    found.setdefault("date", set()).add(str(value))
+                value = date(int(y or local_y), int(m or local_m), int(d or local_d))
             except ValueError:
-                pass
+                continue
+            if value <= timezone.localdate():
+                found.setdefault("date", set()).add(str(value))
         if (
             index < 5
             and re.search(r"\b(?:s\.?\s*r\.?\s*o\.?|a\.?\s*s\.?)(?=\s|$)", text, re.I)

@@ -182,3 +182,6 @@ def test_ocr_proposals_are_conservative():
     assert "Hotovost" in raw
     _, ambiguous = parse_tsv(tsv(["CELKEM 123,00 Kč", "CELKEM 124,00 Kč"]))
     assert "total_amount" not in ambiguous
+
+    assert parse_tsv(tsv(["Prodej 2026-01-10 10:25", "2026 - 01 - 10"]))[1]["date"] == "2026-01-10"
+    assert "date" not in parse_tsv(tsv(["2026-01-10", "2026-01-20"]))[1]

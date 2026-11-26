@@ -7,7 +7,7 @@ Jedna instalace = jedna rodina. Aktivní členové sdílí historii nákupů, so
 ## Co funguje
 
 - Fotografie účtenky → kontrola údajů → uložení; také čistě ruční zápis.
-- Lokální OCR Tesseract ces+eng navrhuje obchod, datum a celkovou částku. Návrhy se použijí až tlačítkem uživatele. Nejednoznačné částky se nedoplňují.
+- Lokální OCR Tesseract ces+eng navrhuje obchod, datum a celkovou částku. Po nahrání fotografie doplní rozpoznané údaje do formuláře ke kontrole. Nejednoznačné údaje zůstanou k ručnímu vyplnění.
 - Obchod, datum, částka v Kč, kategorie, poznámka a nepovinné položky s množstvím a jednotkovou cenou.
 - Součet položek se počítá přesně s Decimal a půl nahoru na haléře. Skutečně zaplacená částka se nikdy nepřepisuje podle položek; rozdíl se zobrazí.
 - Sdílená historie s hledáním obchodu/poznámky, kategorií, daty a stránkováním. Měsíční přehled částek a kategorií.

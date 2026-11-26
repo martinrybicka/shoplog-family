@@ -677,7 +677,7 @@ function EditorForm({ existing }: { existing?: Purchase }) {
   const [draftId, setDraftId] = useState(params.get("draft") || "");
   const [step, setStep] = useState(existing || draftId ? 2 : 1);
   const [store, setStore] = useState(existing?.store || "");
-  const [date, setDate] = useState(existing?.date || today());
+  const [date, setDate] = useState(existing?.date || (draftId ? "" : today()));
   const [amount, setAmount] = useState(existing?.total_amount || "");
   const [category, setCategory] = useState(existing?.category || "FOOD");
   const [note, setNote] = useState(existing?.note || "");
@@ -686,10 +686,40 @@ function EditorForm({ existing }: { existing?: Purchase }) {
   const [busy, setBusy] = useState(false);
   const [requestKey, setRequestKey] = useState(() => crypto.randomUUID());
   const [uncertain, setUncertain] = useState(false);
-  const [proposals, setProposals] = useState<Record<string, string>>({});
+  const [ocrStatus, setOcrStatus] = useState("");
+  const [recognizing, setRecognizing] = useState(false);
   const [ocrText, setOcrText] = useState("");
   function changed() {
     if (!uncertain) setRequestKey(crypto.randomUUID());
+  }
+  async function recognize(id: string) {
+    setRecognizing(true);
+    setError("");
+    setOcrStatus("");
+    try {
+      const { data } = await api<{
+        suggestions: { store?: string; date?: string; total_amount?: string };
+        raw_text: string;
+      }>(`shopping/drafts/${id}/recognize/`, { method: "POST" });
+      const fields = data.suggestions;
+      if (fields.store) setStore((value) => value || fields.store!);
+      if (fields.date) setDate((value) => value || fields.date!);
+      if (fields.total_amount)
+        setAmount((value) => value || fields.total_amount!);
+      setOcrText(data.raw_text);
+      if (Object.keys(fields).length) changed();
+      setOcrStatus(
+        Object.keys(fields).length
+          ? "Rozpoznané údaje jsou doplněné. Zkontrolujte je a vyplňte chybějící kolonky."
+          : "Z fotografie se nepodařilo spolehlivě přečíst údaje. Vyplňte je ručně.",
+      );
+    } catch (e) {
+      setOcrStatus(
+        `Rozpoznání se nezdařilo. ${errorText(e)} Údaje můžete vyplnit ručně nebo zkusit rozpoznání znovu.`,
+      );
+    } finally {
+      setRecognizing(false);
+    }
   }
   useEffect(() => {
     const warn = (e: BeforeUnloadEvent) => {
@@ -738,6 +768,9 @@ function EditorForm({ existing }: { existing?: Purchase }) {
         </ol>
       )}
       <ErrorMessage>{error}</ErrorMessage>
+      <div role="status">
+        {recognizing ? "Čtu údaje z účtenky…" : ocrStatus}
+      </div>
       {step === 1 ? (
         <section className="shop-panel upload-panel">
           <span className="upload-camera">
@@ -776,8 +809,17 @@ function EditorForm({ existing }: { existing?: Purchase }) {
                     body,
                   });
                   setDraftId(result.data.id);
-                  setParams({ draft: result.data.id }, { replace: true });
+                  setParams(
+                    (previous) => {
+                      const next = new URLSearchParams(previous);
+                      next.set("draft", result.data.id);
+                      return next;
+                    },
+                    { replace: true },
+                  );
+                  setDate("");
                   setStep(2);
+                  void recognize(result.data.id);
                   void client.invalidateQueries({ queryKey: ["drafts"] });
                 } catch (err) {
                   setError(errorText(err));
@@ -797,8 +839,8 @@ function EditorForm({ existing }: { existing?: Purchase }) {
             <ArrowRight size={17} />
           </Button>
           <p className="upload-note">
-            Po nahrání můžete údaje navrhnout lokálním rozpoznáním nebo je
-            vyplnit ručně.
+            Po nahrání se údaje zkusí doplnit automaticky. Před uložením je
+            zkontrolujte.
           </p>
         </section>
       ) : (
@@ -868,7 +910,10 @@ function EditorForm({ existing }: { existing?: Purchase }) {
                 údaji; opakování nevytvoří druhý nákup.
               </div>
             )}
-            <fieldset disabled={busy || uncertain} className="editor-fieldset">
+            <fieldset
+              disabled={busy || recognizing || uncertain}
+              className="editor-fieldset"
+            >
               <div className="form-grid">
                 <Field id="store" label="Obchod">
                   <Input
@@ -1050,7 +1095,7 @@ function EditorForm({ existing }: { existing?: Purchase }) {
             </fieldset>
             <div className="save-actions">
               <p>Rozhodující je zaplacená částka z účtenky.</p>
-              <Button type="submit" disabled={busy}>
+              <Button type="submit" disabled={busy || recognizing}>
                 <Check size={18} />
                 {busy ? "Ukládám…" : existing ? "Uložit změny" : "Uložit nákup"}
               </Button>
@@ -1080,25 +1125,8 @@ function EditorForm({ existing }: { existing?: Purchase }) {
                     <Button
                       type="button"
                       variant="secondary"
-                      disabled={busy || uncertain}
-                      onClick={async () => {
-                        setBusy(true);
-                        setError("");
-                        try {
-                          const result = await api<{
-                            suggestions: Record<string, string>;
-                            raw_text: string;
-                          }>(`shopping/drafts/${draftId}/recognize/`, {
-                            method: "POST",
-                          });
-                          setProposals(result.data.suggestions);
-                          setOcrText(result.data.raw_text);
-                        } catch (e) {
-                          setError(errorText(e));
-                        } finally {
-                          setBusy(false);
-                        }
-                      }}
+                      disabled={busy || recognizing || uncertain}
+                      onClick={() => void recognize(draftId)}
                     >
                       <Sparkles size={16} />
                       Rozpoznat údaje
@@ -1106,53 +1134,11 @@ function EditorForm({ existing }: { existing?: Purchase }) {
                     <p className="muted">
                       Rozpoznání probíhá lokálně. Výsledek vždy zkontrolujte.
                     </p>
-                    {Object.keys(proposals).length > 0 && (
-                      <>
-                        <dl className="ocr-proposals">
-                          {Object.entries(proposals).map(([key, value]) => (
-                            <div key={key}>
-                              <dt>
-                                {
-                                  (
-                                    {
-                                      store: "Obchod",
-                                      date: "Datum",
-                                      total_amount: "Částka",
-                                    } as Record<string, string>
-                                  )[key]
-                                }
-                              </dt>
-                              <dd>{value}</dd>
-                            </div>
-                          ))}
-                        </dl>
-                        <Button
-                          type="button"
-                          variant="secondary"
-                          disabled={busy || uncertain}
-                          onClick={() => {
-                            changed();
-                            if (proposals.store) setStore(proposals.store);
-                            if (proposals.date) setDate(proposals.date);
-                            if (proposals.total_amount)
-                              setAmount(proposals.total_amount);
-                            setProposals({});
-                          }}
-                        >
-                          Použít návrhy ve formuláři
-                        </Button>
-                      </>
-                    )}
                     {ocrText && (
                       <details>
                         <summary>Rozpoznaný text</summary>
                         <pre className="ocr-text">{ocrText}</pre>
                       </details>
-                    )}
-                    {ocrText && !Object.keys(proposals).length && (
-                      <p className="muted">
-                        Chybějící nebo nejednoznačné údaje doplňte ručně.
-                      </p>
                     )}
                   </div>
                 )}
@@ -1167,7 +1153,7 @@ function EditorForm({ existing }: { existing?: Purchase }) {
               <Button
                 type="button"
                 variant="ghost"
-                disabled={busy}
+                disabled={busy || recognizing}
                 onClick={async () => {
                   setBusy(true);
                   try {
@@ -1175,6 +1161,8 @@ function EditorForm({ existing }: { existing?: Purchase }) {
                       method: "DELETE",
                     });
                     setDraftId("");
+                    setOcrText("");
+                    setOcrStatus("");
                     setParams({}, { replace: true });
                     changed();
                     void client.invalidateQueries({ queryKey: ["drafts"] });
