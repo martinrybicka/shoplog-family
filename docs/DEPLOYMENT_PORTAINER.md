@@ -62,3 +62,9 @@ Po dokončení NPM uživatelem 18. 11. 2026 veřejné `https://nakupy.mrybicka.c
 ## Položky košíku – verze 1.1.2
 
 Aktualizace 18. 11. 2026 byla sestavena na DOCKER01 z revize `106d081` a nasazena přes Portainer stack 52. Web a backend používají tag 1.1.2, backend je stejný obraz jako 1.1.1, databáze zůstává na 1.0.0. Všechny tři kontejnery hlásily healthy a databázový svazek byl po aktualizaci shodný. Veřejné HTTPS poskytuje nový JavaScript obsahující nabídku potravin a upozornění na prázdné položky. Anonymní přístup k API košíků vrátil 403. Komponentový test skutečně ověřil 20 potravin, přidání řádku a uložení jen vyplněných položek. Přihlášený produkční průchod nebyl proveden.
+
+## Instalace na telefon – verze 1.1.3
+
+Nasazeno 26. 11. 2026 přes Portainer na DOCKER01 z revize `600fbb6`. Web má manifest se samostatným režimem a ikony pro Android a iOS. Backend používá stejný obraz jako ve verzi 1.1.2 a databázový svazek je shodný. Pro práci s daty je potřeba internetové připojení.
+
+Prošlo sestavení, lint a 9 frontendových testů. Chromium s emulovaným mobilním zobrazením načetlo veřejný manifest bez chyb instalovatelnosti. Veřejné ověření dále potvrdilo typ manifestu, rozměry všech čtyř PNG, odpověď 404 pro chybějící ikonu a 403 pro anonymní přístup ke košíkům. Instalace na fyzických telefonech nebyla provedena.
