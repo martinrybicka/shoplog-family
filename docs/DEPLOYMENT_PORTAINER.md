@@ -68,3 +68,7 @@ Aktualizace 18. 11. 2026 byla sestavena na DOCKER01 z revize `106d081` a nasazen
 Nasazeno 26. 11. 2026 přes Portainer na DOCKER01 z revize `600fbb6`. Web má manifest se samostatným režimem a ikony pro Android a iOS. Backend používá stejný obraz jako ve verzi 1.1.2 a databázový svazek je shodný. Pro práci s daty je potřeba internetové připojení.
 
 Prošlo sestavení, lint a 9 frontendových testů. Chromium s emulovaným mobilním zobrazením načetlo veřejný manifest bez chyb instalovatelnosti. Veřejné ověření dále potvrdilo typ manifestu, rozměry všech čtyř PNG, odpověď 404 pro chybějící ikonu a 403 pro anonymní přístup ke košíkům. Instalace na fyzických telefonech nebyla provedena.
+
+## Tlačítko instalace – verze 1.1.4
+
+Nasazeno 26. 11. 2026 přes Portainer z revize `262d886`. Tlačítko je u přihlášení a v horní liště po přihlášení. Prošlo sestavení, lint a 11 frontendových testů. Na veřejném přihlášení Chromium ověřilo otevření návodu a volání simulovaného instalačního dialogu. Instalace na fyzických telefonech nebyla součástí ověření.
